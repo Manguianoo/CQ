@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang=es>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width"/>
+        <title>Cipher-quest</title>
+        <link rel="stylesheet" href="style.css"/>
+        <img src="https://cdn2.iconfinder.com/data/icons/simple-circular-icons-filled/78/Left_Carrot_Filled-512.png" class="atras" onclick="window.location.href='index.html'">
+    </head>
+
+    <body>
+        <div class="main-container">
+            <h1> jugador 1 </h1>
+            <div class="text-container">
+                <style>
+                    h1{
+                        top: 50px;
+                    }
+                    h2 {
+                        margin-left: 200px;
+                        margin-right: 200px;
+                        line-height: 1.3;
+                        top: 40px;
+                    }
+                </style>
+                <h2> ingresa los operadores: "and(a), or(o), condicional(c), bicondicional(b). </h2>
+        </div>
+        </div>
+
+        <!-- FORMULARIO PARA PONER OPERADORES J1-->
+        <form class="formulario" id="inputs1">
+            ( <input type="text" id="op1" maxlength="1" size="1"> )
+            <input type="text" id="op2" maxlength="1" size="1">
+            ( <input type="text" id="op3" maxlength="1" size="1"> )
+        </form>
+
+        <button class="boton-animado2" onclick="guardar()" > JUGADOR 2 </button>
+
+        <script>
+            //Funcion que guarda operadores jug1
+            function guardar() {
+            window.location.href="jug2.html"; //Redirecciona a la pantalla de jug2
+            //Recupera los operadores
+            const op1 = document.getElementById('op1').value;
+            const op2 = document.getElementById('op2').value;
+            const op3 = document.getElementById('op3').value;
+
+            // Guardar los operadores en el almacenamiento local
+            localStorage.setItem('jugador1', JSON.stringify([op1, op2, op3])); //JSON=JavaScript Object Notation. los convierte a cadena de texto
+        }
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang=es>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width"/>
+        <title>Cipher-quest</title>
+        <link rel="stylesheet" href="style.css"/>
+        <img src="https://cdn2.iconfinder.com/data/icons/simple-circular-icons-filled/78/Left_Carrot_Filled-512.png" class="atras" onclick="window.location.href='index.html'">
+    </head>
+
+    <body>
+        <div class="main-container">
+            <h1> jugador 2 </h1>
+            <div class="text-container">
+                <style>
+                    h1{
+                        top: 50px;
+                    }
+                    h2 {
+                        margin-left: 200px;
+                        margin-right: 200px;
+                        line-height: 1.3;
+                        top: 20px;
+                    }
+                    #temporizador{
+                        position: absolute;
+                        top: 46%;
+                        left: 37%;
+                        font-family: 'Press Start 2P', fantasy;
+                        font-size: 15px;
+                        color: red;
+                        text-transform: uppercase;
+                    }
+                    #contador{
+                        position: absolute;
+                        top: 50%;
+                        left: 40%;
+                        font-family: 'Press Start 2P', fantasy;
+                        font-size: 15px;
+                        color: red;
+                        text-transform: uppercase;
+                    }
+                </style>
+
+                <h2> ¡comienza a adivinar! </h2>
+        </div>
+    
+        <!-- FORMULARIO PARA VALORES DE V Y F-->
+        <form class="valores" id="vf">
+            p: <select id="p" onchange="resultado()">
+                <option id="ver" value="V"> V </option>
+                <option id="fal" value="F"> F </option>
+            </select>
+            q: <select id="q" onchange="resultado()">
+                <option id="ver" value="V"> V </option>
+                <option id="fal" value="F"> F </option>
+            </select>
+            r: <select id="r" onchange="resultado()">
+                <option id="ver" value="V"> V </option>
+                <option id="fal" value="F"> F </option>
+            </select>
+            s: <select id="s" onchange="resultado()">
+                <option id="ver" value="V"> V </option>
+                <option id="fal" value="F"> F </option>
+            </select>
+        </form>
+        
+        <!-- FORMULARIO PARA PONER OPERADORES J2-->
+        <form class="formulario" id="inputs2">
+            (p <input type="text" id="op4" maxlength="1" size="1" oninput="resultado()"> q)
+                <input type="text" id="op5" maxlength="1" size="1" oninput="resultado()">
+            (r <input type="text" id="op6" maxlength="1" size="1" oninput="resultado()"> s)  <span id="resultado"></span>
+        </form>
+
+        <button class="boton-animado3" onclick="comparar()"> VERIFICAR </button>
+        <div id="temporizador">TIEMPO RESTANTE: 90</div>
+        <span id="contador"> INTENTOS </span>
+
+        <script>
+           // Temporizador
+        let tiempores = 90; //el tiempo es de 90s
+        const temp = document.getElementById('temporizador');
+
+        function iniciar() {
+            const intervalo = setInterval(() => {
+                tiempores--;
+                temp.textContent = `Tiempo restante: ${tiempores} seg`;
+
+                if (tiempores <= 0) { // Ciclo que sucede si se acaba el tiempo
+                    clearInterval(intervalo);
+                    alert('¡SE ACABÓ EL TIEMPO!');
+                    window.location.href = "fin.html"; 
+                }
+            }, 1000); //Cambia cada segundo
+        }
+
+            let intentos = 0;
+            const contador = document.getElementById('contador');
+            function comparar(){
+                //Compara los operadores ingresados por jug1 con los de jug2
+
+                //Obtener los operadores de jug2
+                const op4 = document.getElementById('op4').value;
+                const op5 = document.getElementById('op5').value;
+                const op6 = document.getElementById('op6').value;
+
+                // Recuperar los operadores del jugador 1
+                const operadoresJugador1 = JSON.parse(localStorage.getItem('jugador1'));
+
+                //Ciclo para comparar
+                if (operadoresJugador1) {
+                const Iguales = (
+                    operadoresJugador1[0] === op4 &&
+                    operadoresJugador1[1] === op5 &&
+                    operadoresJugador1[2] === op6
+                );
+
+                if (Iguales) {
+                    alert('¡BIEN HECHO! ADIVINASTE LOS OPERADORES');
+                    window.location.href = "fin.html";
+                } else {
+                    alert('¡OH NO! LOS OPERADORES SON DIFERENTES');
+                }
+                intentos++;
+                contador.textContent = `LLEVAS ${intentos} INTENTOS`;
+            }}
+
+
+            function convertirTxtVerdad(valor) {
+            return valor === "V"; //V es verdadero y todo lo demas seria falso
+        }
+
+        function computeRes(var1, var2, var3, var4, op4, op5, op6) { 
+            let res1 = true;
+            let res2 = true;
+            let resFinal = true;
+
+            let p = convertirTxtVerdad(var1); 
+            let q = convertirTxtVerdad(var2);
+            let r = convertirTxtVerdad(var3);
+            let s = convertirTxtVerdad(var4);
+
+            //Ciclo para parentesis 1
+            if (op4 === "A") {
+                res1 = p && q;
+            } else if (op4 === "O") {
+                res1 = p || q;
+            } else if (op4 === "C") {
+                res1 = !p || q;
+            } else if (op4 === "B") {
+                res1 = p === q;
+            }
+
+            //Ciclo para parentesis 2
+            if (op6 === "A") {
+                res2 = r && s;
+            } else if (op6 === "O") {
+                res2 = r || s;
+            } else if (op6 === "C") {
+                res2 = !r || s;
+            } else if (op6 === "B") {
+                res2 = r === s;
+            }
+
+            //Ciclo para el operador entre los parentesis
+            if (op5 === "A") {
+                resFinal = res1 && res2;
+            } else if (op5 === "O") {
+                resFinal = res1 || res2;
+            } else if (op5 === "C") {
+                resFinal = !res1 || res2;
+            } else if (op5 === "B") {
+                resFinal = res1 === res2;
+            }
+            return resFinal;
+        }
+
+        function resultado() {
+            // Recuperar los valores de verdad
+            let p = document.getElementById('p').value;
+            let q = document.getElementById('q').value;
+            let r = document.getElementById('r').value;
+            let s = document.getElementById('s').value;
+            
+            // Recuperar operadores
+            let op4 = document.getElementById('op4').value;
+            let op5 = document.getElementById('op5').value;
+            let op6 = document.getElementById('op6').value;
+
+            // Calcular el resultado
+            const res = computeRes(p, q, r, s, op4, op5, op6);
+
+            // Mostrar el resultado en el span
+            document.getElementById("resultado").textContent = res ? " VERDADERO" : " FALSO"; //Si es verdad se va a verdadero y sino a falso
+        }
+
+            window.onload = iniciar;
+        </script>
+    </body>
+</html>
