@@ -37,16 +37,23 @@
         <button class="boton-animado2" onclick="guardar()" > JUGADOR 2 </button>
 
         <script>
-            //Funcion que guarda operadores jug1
             function guardar() {
-            window.location.href="jug2.html"; //Redirecciona a la pantalla de jug2
-            //Recupera los operadores
+            // Recupera los operadores
             const op1 = document.getElementById('op1').value;
             const op2 = document.getElementById('op2').value;
             const op3 = document.getElementById('op3').value;
 
+            // Verificar que los operadores sean válidos
+            if (![op1, op2, op3].every(op => ['A', 'O', 'C', 'D'].includes(op))) {
+                alert('¡OPERADOR INVÁLIDO!');
+                return; // Detener la ejecución si hay un operador inválido
+            }
+
             // Guardar los operadores en el almacenamiento local
-            localStorage.setItem('jugador1', JSON.stringify([op1, op2, op3])); //JSON=JavaScript Object Notation. los convierte a cadena de texto
+            localStorage.setItem('jugador1', JSON.stringify([op1, op2, op3])); // JSON convierte a cadena de texto
+
+            // Redireccionar a la pantalla de jug2
+            window.location.href = "jug2.html";
         }
         </script>
 
